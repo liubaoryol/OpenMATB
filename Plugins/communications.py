@@ -8,6 +8,8 @@ from rstr import xeger
 from random import randrange, choice
 from math import copysign
 from pygame import mixer
+from pydub import AudioSegment
+
 from Helpers.Translator import translate as _
 
 class Task(QtWidgets.QWidget):
@@ -463,17 +465,10 @@ class Task(QtWidgets.QWidget):
 
         data = []
         for infile in files_to_concat:
-            w = wave.open(infile, 'rb')
-            w = wave.open(infile, 'rb')
-            data.append([w.getparams(), w.readframes(w.getnframes())])
-            w.close()
+            data.append(AudioSegment.from_wav(infile))
 
-        output = wave.open(outfile_path, 'wb')
-        output.setparams(data[0][0])
-        output.setframerate(41000)
-        for d, this_data in enumerate(data):
-            output.writeframes(data[d][1])
-        output.close()
+        combined = sum(data)
+        combined.export(outfile_path, format="wav")
 
         return outfile_path
 
