@@ -1,0 +1,38 @@
+# Scenario template
+# Durations are expressed in milliseconds
+
+# 1. Set tasks parameters
+
+# 1.a. System monitoring parameters
+
+0:00:00;sysmon;taskplacement;bottomleft
+0:00:00;sysmon;feedbacks-positive-color;#00ff00
+0:00:00;sysmon;feedbacks-negative-color;#ff0000
+0:00:01;sysmon;feedbacks-negative-trigger;2
+
+# 2. Start appropriate tasks
+
+0:00:00;sysmon;start
+
+# 3. Set scenario events
+
+# Retrieve participant information 
+
+# 0:00:00;participantinfo;start
+# 0:00:00;genericscales;filename;nasatlx_en.txt
+# 0:00:00;genericscales;start
+
+
+# 3.a. System monitoring events
+
+0:00:03;sysmon;lights-1-failure;True
+0:00:10;sysmon;scales-3-failure;down
+0:00:17;sysmon;scales-1-failure;up
+0:00:24;sysmon;lights-2-failure;True
+
+
+# 4. End tasks at 0.5 minutes
+
+0:00:30;sysmon;stop
+
+0:00:31;end

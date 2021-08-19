@@ -1,0 +1,38 @@
+# Scenario template
+# Durations are expressed in milliseconds
+
+# 1. Set tasks parameters
+# 1.d. Communications parameters
+
+0:00:00;communications;taskplacement;topmid
+0:00:00;communications;callsignregex;[A-Z][A-Z]\d\d
+0:00:00;communications;othercallsignnumber;5
+0:00:00;communications;voicegender;male
+0:00:00;communications;voiceidiom;english
+
+
+# 2. Start appropriate tasks
+
+0:00:00;communications;start
+
+
+# 3. Set scenario events
+
+# Retrieve participant information 
+
+# 0:00:00;participantinfo;start
+# 0:00:00;genericscales;filename;nasatlx_en.txt
+# 0:00:00;genericscales;start
+
+
+# 3.d. Communications events
+# /!\ Be careful to let sufficient time during two prompts to avoid sound overlaping
+
+0:00:02;communications;radioprompt;own
+0:00:17;communications;radioprompt;own
+
+
+# 4. End tasks at 0.5 minutes
+0:00:30;communications;stop
+
+0:00:31;end
