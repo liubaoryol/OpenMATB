@@ -1,4 +1,9 @@
+"""
+Script to calculate the score of the performance on secondary tasks.
 
+File name is the only obligatory argument.
+No need of specifying the secondary task (communication/sysmon)
+"""
 import argparse
 import ast
 import os
@@ -18,6 +23,7 @@ data = file.read()
 score = 0
 
 # SYSMON task
+# NOTE: if it's a communications task, then the following vars are 0
 pos_occ = data.count("HIT")
 missed = data.count("MISS")
 wrong_occ = data.count("\tFA\n")
@@ -31,21 +37,32 @@ str_len1 = len("RADIOPROMPT\t")
 str_len2 = len("TARGET\t")
 
 while True:
+    # Check if it's a communication file. If not, break
     st = tmp.find("RADIOPROMPT\t")
     if st == -1:
         break
     
-
+    # Determine the frequency goal and if it's own or other's
     own = tmp[st+str_len1 : st+str_len1+3]
-    if "own" in own:
-        target = tmp.find("TARGET\t")
-        targetfreq = tmp[target+str_len2 : target+str_len2 + 5]
-        name = tmp[target - 6: target - 1]
+    target = tmp.find("TARGET\t")
+    targetfreq = tmp[target+str_len2 : target+str_len2 + 5]
+    name = tmp[target - 6: target - 1]
     expression = "\t" + name + "\t" + str(targetfreq)
-    if expression in data:
-        score += opt.correct_hit_score
+
+    if "own" in own:
+        if expression in data:
+            # Add points when frequency changed correctly
+            score += opt.correct_hit_score
+        else:
+            # If frequency changed incorrectly or didn't change
+            score += opt.failed_hit_score
+    elif "oth" in own:
+        if "\t" + name + "\t1" in data:
+            # Substract points if frequency changed
+            score -= opt.correct_hit_score
     else:
-        score += opt.failed_hit_score
+        target = tmp.find("TARGET\t")
+    
     tmp = tmp[target + str_len2:]
 
 
